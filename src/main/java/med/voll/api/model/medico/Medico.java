@@ -21,6 +21,7 @@ public class Medico {
     private String email;
     private String telefone;
     private String crm;
+    private boolean ativo;
 
     @Enumerated(EnumType.STRING)
     private Especialidade especialidade;
@@ -29,6 +30,7 @@ public class Medico {
     private Endereco endereco;
 
     public Medico(DadosCadastroMedicoDTO dadosMedico) {
+        this.ativo = true;
         this.nome = dadosMedico.nome();
         this.email = dadosMedico.email();
         this.telefone = dadosMedico.telefone();
@@ -47,6 +49,10 @@ public class Medico {
         if (dadosAtualizado.enderecoDTO() != null) {
             this.endereco.atualizarInformacoes(dadosAtualizado.enderecoDTO());
         }
+    }
+
+    public void excluir() {
+        this.ativo = false;
     }
 
 }

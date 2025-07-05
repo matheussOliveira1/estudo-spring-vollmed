@@ -25,7 +25,7 @@ public class MedicoService {
     }
 
     public Page<DadosMedicoDTO> listarMedicos(Pageable pageable) {
-        return repository.findAll(pageable)
+        return repository.findAllByAtivoTrue(pageable)
                 .map(DadosMedicoDTO::new);
     }
 
@@ -33,6 +33,15 @@ public class MedicoService {
         Optional<Medico> medico = repository.findById(dadosAtualizados.id());
         if (medico.isPresent()) {
             medico.get().atualizarInformacoes(dadosAtualizados);
+        } else {
+            System.out.println("Medico nao encontrado");
+        }
+    }
+
+    public void excluir(Long id) {
+        Optional<Medico> medico = repository.findById(id);
+        if (medico.isPresent()) {
+            medico.get().excluir();
         } else {
             System.out.println("Medico nao encontrado");
         }
