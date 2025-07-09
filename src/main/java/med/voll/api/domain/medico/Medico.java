@@ -1,10 +1,10 @@
-package med.voll.api.model.medico;
+package med.voll.api.domain.medico;
 
 import jakarta.persistence.*;
 import lombok.*;
+import med.voll.api.domain.common.Endereco;
 import med.voll.api.dto.medico.DadosAtualizacaoMedicoDTO;
 import med.voll.api.dto.medico.DadosCadastroMedicoDTO;
-import med.voll.api.model.endereco.Endereco;
 
 @Table(name = "medicos")
 @Entity(name = "Medico")

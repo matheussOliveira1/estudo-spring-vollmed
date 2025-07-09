@@ -1,10 +1,10 @@
 package med.voll.api.service;
 
 import med.voll.api.dto.medico.DadosAtualizacaoMedicoDTO;
-import med.voll.api.dto.medico.DadosCadastroMedicoDTO;
+import med.voll.api.dto.medico.DadosDetalhamentoMedicoDTO;
 import med.voll.api.dto.medico.DadosMedicoDTO;
-import med.voll.api.model.medico.Medico;
-import med.voll.api.repository.medico.MedicoRepository;
+import med.voll.api.domain.medico.Medico;
+import med.voll.api.infrastructure.persistence.medico.MedicoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -18,8 +18,8 @@ public class MedicoService {
     @Autowired
     private MedicoRepository repository;
 
-    public void cadastrar(DadosCadastroMedicoDTO dados) {
-        repository.save(new Medico(dados));
+    public void cadastrar(Medico medico) {
+        repository.save(medico);
     }
 
     public Page<DadosMedicoDTO> listarMedicos(Pageable pageable) {
@@ -27,22 +27,30 @@ public class MedicoService {
                 .map(DadosMedicoDTO::new);
     }
 
-    public void atualizarDados(DadosAtualizacaoMedicoDTO dadosAtualizados) {
+    public DadosDetalhamentoMedicoDTO atualizarDados(DadosAtualizacaoMedicoDTO dadosAtualizados) {
         Optional<Medico> medico = repository.findById(dadosAtualizados.id());
         if (medico.isPresent()) {
             medico.get().atualizarInformacoes(dadosAtualizados);
-        } else {
-            System.out.println("Medico nao encontrado");
+            return new DadosDetalhamentoMedicoDTO(medico.get());
         }
+        return null;
     }
 
-    public void excluir(Long id) {
+    public boolean excluir(Long id) {
         Optional<Medico> medico = repository.findById(id);
         if (medico.isPresent()) {
             medico.get().excluir();
-        } else {
-            System.out.println("Medico nao encontrado");
+            return true;
         }
+        return false;
+    }
+
+    public DadosDetalhamentoMedicoDTO detalharMedico(Long id) {
+        Optional<Medico> medico = repository.findById(id);
+        if (medico.isPresent()) {
+            return new DadosDetalhamentoMedicoDTO(medico.get());
+        }
+        return null;
     }
 
 }
