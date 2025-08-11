@@ -17,7 +17,7 @@ import java.util.Optional;
 public class PacienteService {
 
     @Autowired
-    PacienteRepository repository;
+    private PacienteRepository repository;
 
     public void cadastrar(DadosCadastroPacienteDTO dados) {
         repository.save(new Paciente(dados));
