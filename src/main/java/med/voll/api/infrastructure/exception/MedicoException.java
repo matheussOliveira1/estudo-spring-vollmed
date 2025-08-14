@@ -1,6 +1,7 @@
 package med.voll.api.infrastructure.exception;
 
 import jakarta.persistence.EntityNotFoundException;
+import med.voll.api.domain.consulta.ValidacaoException;
 import med.voll.api.dto.medico.DadosMedicoDTO;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -52,6 +53,11 @@ public class MedicoException {
     @ExceptionHandler(Exception.class)
     public ResponseEntity tratarErro500(Exception ex) {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erro: " +ex.getLocalizedMessage());
+    }
+
+    @ExceptionHandler(ValidacaoException.class)
+    public ResponseEntity tratarErroRegraDeNegocio(ValidacaoException ex) {
+        return ResponseEntity.badRequest().body(ex.getMessage());
     }
 
     private record DadosErroValidacaoDTO(
